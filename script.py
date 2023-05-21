@@ -73,11 +73,14 @@ if is_ready == "y":
     random.shuffle(front_end_framework)
     random.shuffle(backend_end_framework)
 
+    # pick a random item from each list
     front_end_framework = random.choice(front_end_framework)
     backend_end_framework = random.choice(backend_end_framework)
     databases = random.choice(databases)
 
-    print("\n")
+    print("\n")  # spacing
+
+    # conditionally print the results
     if backend_end_framework == "Firebase" or backend_end_framework == "Supabase":
         print(f"Your front end framework is: {front_end_framework}")
         print(f"Your backend framework is: {backend_end_framework}")
