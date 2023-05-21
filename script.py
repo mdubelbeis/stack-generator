@@ -50,16 +50,23 @@ if is_ready == "y":
 
     print("\n")
     try:
-        print("Your front end framework is: " + front_end_framework[-1])
+        print(f"Your front end framework is: {random.choice(front_end_framework)}")
     except Exception as e:
         print("Error in frontend framework. Please try again.")
         print(e)
 
     try:
-        print("Your backend framework is: " + backend_end_framework[-1])
+        print(f"Your backend framework is: {random.choice(backend_end_framework)}")
     except Exception as e:
         print("Error in backend framework: Please try again.")
         print(e)
+
+    try:
+        print(f"Your database is: {random.choice(databases)}")
+    except Exception as e:
+        print("Error in database. Please try again.")
+        print(e)
+
 
 if is_ready == "n":
     print("Okay. Goodbye!")
