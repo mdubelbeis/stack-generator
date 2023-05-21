@@ -25,28 +25,38 @@ databases = [
 full_stack_framework = front_end_framework + backend_end_framework
 
 print("\n")
-print("Welcome to the Full Stack Framework Generator!")
+print("************************************")
+print("Welcome to the Full Stack Generator!")
+print("************************************")
+print("\n")
 print("This script will help you choose a framework for your next project.")
-print("*** NOTE: Front End Frameworks and Meta Frameworks have been combined. *** ")
 
+print("\n")
+print("These are your current available front end frameworks:")
+print("------------------------------------------------------")
+for framework in front_end_framework:
+    print(framework)
+
+print("\n")
+print("These are your current available backend frameworks:")
+print("-----------------------------------------------------")
+for framework in backend_end_framework:
+    print(framework)
+
+print("\n")
+print("These are your current available databases:")
+print("--------------------------------------------")
+for db in databases:
+    print(db)
+
+print("\n")
 is_ready = input("Are you ready [y/n]?: ")
 
 if is_ready == "y":
-    print(front_end_framework)
     random.shuffle(front_end_framework)
     random.shuffle(backend_end_framework)
-    print(front_end_framework)
 
     print("Great! Let's get started.")
-    print("\n")
-    print("These are the available front end frameworks:")
-    for framework in front_end_framework:
-        print(framework)
-
-    print("\n")
-    print("These are the available backend frameworks:")
-    for framework in backend_end_framework:
-        print(framework)
 
     print("\n")
     try:
@@ -66,6 +76,8 @@ if is_ready == "y":
     except Exception as e:
         print("Error in database. Please try again.")
         print(e)
+
+    print
 
 
 if is_ready == "n":
