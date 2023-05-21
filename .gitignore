@@ -1,0 +1,20 @@
+# Python specific
+*.pyc
+__pycache__/
+venv/
+.venv/
+env/
+dist/
+build/
+*.egg-info/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+
+# VSCode specific
+.vscode/
+*.code-workspace
+.settings/
+
+# macOS specific
+.DS_Store
