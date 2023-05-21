@@ -1,10 +1,16 @@
 import random
 
-# RULES: You can add or remove any framework or database you want.
-# Just make sure to follow the format of the lists below.
-# If you want to add a new framework, add it to the appropriate list.
-# If you want to remove a framework, remove it from the appropriate list.
-# Make sure to keep the lists in alphabetical order.
+
+def menu():
+    print("1. Add a framework")
+    print("2. Remove a framework")
+    print("3. Update a framework")
+    print("4. View all frameworks")
+    print("5. Choose my next stack")
+    print("5. Exit")
+
+    choice = input("Enter your choice: ")
+    return choice
 
 
 front_end_framework = [
@@ -67,6 +73,9 @@ for db in databases:
 
 print("\n")
 is_ready = input("Are you ready [y/n]?: ")
+
+menu_choice = menu()
+
 
 if is_ready == "y":
     # shuffle the lists
