@@ -1,63 +1,181 @@
 import random
 import os
 import sys
+from colorama import Fore, Back, Style
 
 
-def menu():
-    print("1. Add a framework")
+PROJECT_NAME = "my-project"
+
+# All frameworks need to be in a stable 1.0 release
+front_end_frameworks = [
+    "react",
+    "vue",
+    "svelte",
+    "qwik",
+    "solid",
+    "astro",
+]
+
+meta_frameworks = [
+    "next",
+    "nuxt",
+    "svelte_kit",
+    "qwik_city",
+    "solid_start",
+]
+
+# Randomize to get the combined_framework tuple, then randomize the tuple to get the framework or meta_framework
+CLI_commands = [
+    {"react": "npm create vite@latest"},
+    {"vue", "npm create vite@latest"},
+    {"svelte": "npm create vite@latest"},
+    {"next": "npx create-next-app@latest"},
+    {"qwik", "npm create qwik@latest"},
+    {"qwik_city", "npm create qwik@latest"},
+    {"solid_start", "npm init solid@latest"},
+    {"nuxt": "npx create-nuxt-app " + PROJECT_NAME},
+    {"svelte_kit", "npm create svelte@latest " + PROJECT_NAME},
+    {"solid", "npx degit solidjs/templates/js " + PROJECT_NAME},
+    {"astro", "npm create astro@latest"},
+]
+
+# All frameworks need to be in a stable 1.0 release
+backend_end_frameworks = [
+    "express",
+    "djangorestframework",
+    "firebase",
+    "supabase",
+]
+
+# All frameworks need to be in a stable 1.0 release
+databases = [
+    "postgresql",
+    "mongodb",
+]
+
+
+def operations_menu():
+    print("OPERATIONS MENU")
+    print("---------------")
+    print("1. Add a frontend framework")
     print("2. Add a meta framework")
-    print("3. Group a framework with a meta framework")
     print("3. Add a database")
-    print("3. Remove a framework")
-    print("4. Remove a database")
-    print("5. Update a framework")
-    print("6. Update a database")
-    print("7. View all frameworks")
-    print("8. View all databases")
-    print("9. Choose my next stack")
-    print("10. Exit")
+    print("3. Group a frontend framework with a meta framework")
+    print("5. Remove a frontend framework")
+    print("6. Remove a meta framework")
+    print("7. Remove a database")
+    print("10. Print all frameworks and databases")
+    print("11. View all databases")
 
+    print("\n")
+    print(f"Exit {Fore.GREEN}[q/Q]{Style.RESET_ALL}")
+
+    operation = input("Enter your choice: ")
+
+    if operation == "q" or operation == "Q":
+        print("Goodbye!")
+        sys.exit()
+    return operation
+
+
+def stack_generator_menu():
+    print(
+        f"""
+{Fore.BLUE}#~#~#~#~#~#~#~#~#~#~#~#~{Style.RESET_ALL}
+{Fore.BLUE}#{Style.RESET_ALL} {Fore.GREEN}Stack Generator Menu{Style.RESET_ALL} {Fore.BLUE}#{Style.RESET_ALL}
+{Fore.BLUE}#~#~#~#~#~#~#~#~#~#~#~#~{Style.RESET_ALL}
+        """
+    )
+    print(f"{Fore.GREEN}[1]{Style.RESET_ALL} - Randomize my next stack")
+    print(f"{Fore.GREEN}[q]{Style.RESET_ALL} - Quit")
+
+    print("\n")
     choice = input("Enter your choice: ")
-    return choice
+
+    if choice == "1":
+        stack = choose_stack()
+        print(stack)
+
+    print("Goodbye!")
+    sys.exit()
 
 
-def choose_stack(front_end_framework, backend_end_framework, databases):
-    random.shuffle(front_end_framework)
-    random.shuffle(backend_end_framework)
+def main_menu():
+    print(f"\n{Fore.GREEN}Which menu would you like to see?: ")
+    print(f"{Fore.BLUE}~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~{Style.RESET_ALL}")
+    print(f"{Fore.GREEN}[1]{Style.RESET_ALL} - Operations Menu")
+    print(f"{Fore.GREEN}[2]{Style.RESET_ALL} - Stack Generator Menu")
+    print(f"{Fore.GREEN}[q]{Style.RESET_ALL} - Quit")
+
+    menu_choice = input("Enter your choice: ")
+
+    while True:
+        if menu_choice == "1":
+            operations_menu()
+        elif menu_choice == "2":
+            stack_generator_menu()
+        elif menu_choice == "q":
+            print("Goodbye!")
+            sys.exit()
+        else:
+            print("Invalid choice. Please try again.")
+            main_menu()
+
+
+def choose_stack():
+    # shuffle the lists (so the order is different each time)
+    random.shuffle(front_end_frameworks)
+    random.shuffle(meta_frameworks)
+    random.shuffle(backend_end_frameworks)
+    random.shuffle(databases)
 
     # pick a random item from each list
-    front_end_framework = random.choice(front_end_framework)
-    backend_end_framework = random.choice(backend_end_framework)
-    databases = random.choice(databases)
+
+    # Filter FE framework and meta framework
+    front_end_framework_options = [random.choice(front_end_frameworks)]
+    front_end_framework_options.append(random.choice(meta_frameworks))
+
+    front_end_framework_selected = random.choice(
+        meta_frameworks
+    )  # My use case right now
+    backend_end_framework_selected = random.choice(backend_end_frameworks)
+    print(backend_end_framework_selected)
+    database_selected = random.choice(databases)
 
     print("\n")  # spacing
 
     # conditionally print the results
-    if backend_end_framework == "Firebase" or backend_end_framework == "Supabase":
-        clear_terminal()
-        print(f"Your front end framework is: {front_end_framework}")
-        print(f"Your backend framework is: {backend_end_framework}")
+    if (
+        backend_end_framework_selected == "firebase"
+        or backend_end_framework_selected == "supabase"
+    ):
+        database_selected = None
+        print(
+            f"Your front end framework is: {front_end_framework_selected.title().replace('_', ' ')}"
+        )
+        print(f"Your backend framework is: {backend_end_framework_selected.title()}")
     else:
-        clear_terminal()
-        print(f"Your front end framework is: {front_end_framework}")
-        print(f"Your backend framework is: {backend_end_framework}")
-        print(f"Your database is: {databases}")
+        print(f"Your front end framework is: {front_end_framework_selected.title()}")
+        print(f"Your backend framework is: {backend_end_framework_selected.title()}")
+        print(f"Your database is: {database_selected.title()}")
 
-    user_agrees = input("Ready to build? (y/n): ")
-    return user_agrees
+    return {
+        "front_end_framework": front_end_framework_selected.title().replace("_", " "),
+        "backend_end_framework": backend_end_framework_selected.title(),
+        "databases": database_selected.title(),
+    }
 
 
 def opening_message():
+    print(f"{Fore.BLUE}#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~{Style.RESET_ALL}")
     print(
-        """
-***************************************
-    Welcome to the Stack Generator!
-***************************************    
-    
-This script will help you choose a framework for your next project
-by randomly selecting a front end framework, a backend framework, and a database.
-    
-        """
+        f"{Fore.BLUE}#{Style.RESET_ALL} {Fore.GREEN} Welcome to the Stack Generator! {Fore.BLUE}#{Style.RESET_ALL}"
+    )
+    print(f"{Fore.BLUE}#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~{Style.RESET_ALL}")
+
+    print("\n")
+    print(
+        "This script will help you choose a framework for your next project by randomly selecting one for you then upon approval, will generate a stack for you."
     )
 
 
@@ -66,111 +184,51 @@ def clear_terminal():
 
 
 def print_frameworks():
-    print("These are your current available front end frameworks:")
+    print("\n")
+    print(
+        f"{Fore.GREEN}Here are your current available frontend frameworks: {Style.RESET_ALL}"
+    )
+    print(
+        f"{Fore.BLUE}-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~{Style.RESET_ALL}"
+    )
 
-    print("------------------------------------------------------")
-    for framework in front_end_framework:
+    for framework in front_end_frameworks:
         print(framework)
 
     print("\n")
-    print("These are your current available backend frameworks:")
-    print("-----------------------------------------------------")
-    for framework in backend_end_framework:
+    print(
+        f"{Fore.GREEN}Here are your current available meta frameworks: {Style.RESET_ALL}"
+    )
+    print(
+        f"{Fore.BLUE}-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~{Style.RESET_ALL}"
+    )
+
+    for framework in meta_frameworks:
         print(framework)
 
     print("\n")
-    print("These are your current available databases:")
-    print("--------------------------------------------")
+    print(
+        f"{Fore.GREEN}These are your current available backend frameworks: {Style.RESET_ALL}"
+    )
+    print(
+        f"{Fore.BLUE}-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-{Style.RESET_ALL}"
+    )
+
+    for framework in backend_end_frameworks:
+        print(framework)
+
+    print("\n")
+    print(f"{Fore.GREEN}These are your current available databases: {Style.RESET_ALL}")
+    print(f"{Fore.BLUE}-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~{Style.RESET_ALL}")
+
     for db in databases:
         print(db)
-
-    print("\n")
-
-
-# All frameworks need to be in a stable 1.0 release
-front_end_framework = [
-    "React",
-    "Vue",
-    "Svelte",
-    "Qwik",
-    "Solid",
-    "Astro",
-]
-
-meta_frameworks = [
-    "Next",
-    "Nuxt",
-    "SvelteKit",
-    "QwikCity",
-    "SolidStart",
-]
-
-combined_frameworks = [  # Randomize to get the combined_framework tuple, then randomize the tuple to get the framework or meta_framework
-    ("React", "Next"),
-    ("Vue", "Nuxt"),
-    ("Svelte", "SvelteKit"),
-    ("Qwik", "QwikCity"),
-    ("Solid", "SolidStart"),
-]
-
-# All frameworks need to be in a stable 1.0 release
-backend_end_framework = [
-    "Express",
-    "Django REST Framework",
-    "Firebase",
-    "Supabase",
-]
-
-# All frameworks need to be in a stable 1.0 release
-databases = [
-    "PostgreSQL",
-    "MongoDB",
-]
 
 
 def main():
     opening_message()
     print_frameworks()
-
-    menu_choice = menu()
-
-    while True:
-        if menu_choice == "1":
-            isFrontEnd = input("Is this a front end framework? Press 1: ")
-            if isFrontEnd == "y":
-                framework = input("Enter the framework name: ")
-                front_end_framework.append(framework)
-                print(f"Added {framework} to the list of front-end frameworks")
-                print_frameworks()
-            else:
-                framework = input("Enter the framework name: ")
-                backend_end_framework.append(framework)
-                print(f"Added {framework} to the list of back-end frameworks")
-                print_frameworks()
-
-        elif menu_choice == "2":
-            print("Removing a framework")
-        elif menu_choice == "3":
-            print("Updating a framework")
-        elif menu_choice == "4":
-            print("Viewing all frameworks")
-        elif menu_choice == "5":
-            # shuffle the lists
-            user_option = choose_stack(
-                front_end_framework, backend_end_framework, databases
-            )
-            if user_option == "y":
-                print("Okay. Goodbye!")
-                sys.exit()
-            else:
-                print("Sorry. Goodbye for now!")
-                sys.exit()
-                #
-        elif menu_choice == "6":
-            print("Okay. Goodbye!")
-            sys.exit()
-        else:
-            print("Sorry. That's not a valid choice.")
+    main_menu()
 
 
 if __name__ == "__main__":
