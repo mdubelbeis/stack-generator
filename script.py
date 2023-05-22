@@ -103,8 +103,8 @@ def stack_generator_menu():
 def main_menu():
     print(f"\n{Fore.GREEN}Which menu would you like to see?: ")
     print(f"{Fore.BLUE}~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~{Style.RESET_ALL}")
-    print(f"{Fore.GREEN}[1]{Style.RESET_ALL} - Operations Menu")
-    print(f"{Fore.GREEN}[2]{Style.RESET_ALL} - Stack Generator Menu")
+    print(f"{Fore.GREEN}[1]{Style.RESET_ALL} - Stack Generator Menu")
+    # print(f"{Fore.GREEN}[2]{Style.RESET_ALL} - Operations Menu")
     print(f"{Fore.GREEN}[q]{Style.RESET_ALL} - Quit")
 
     menu_choice = input("Enter your choice: ")
@@ -115,7 +115,7 @@ def main_menu():
         elif menu_choice == "2":
             stack_generator_menu()
         elif menu_choice == "q":
-            print("Goodbye!")
+            print("Goodbye! Keep building!")
             sys.exit()
         else:
             print("Invalid choice. Please try again.")
