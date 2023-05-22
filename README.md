@@ -1,4 +1,4 @@
-# RANDOM FRAMEWORK SELECTOR
+# Stack Generator
 
 ## Description
 
