@@ -5,11 +5,15 @@ import sys
 
 def menu():
     print("1. Add a framework")
-    print("2. Remove a framework")
-    print("3. Update a framework")
-    print("4. View all frameworks")
-    print("5. Choose my next stack")
-    print("6. Exit")
+    print("2. Add a database")
+    print("3. Remove a framework")
+    print("4. Remove a database")
+    print("5. Update a framework")
+    print("6. Update a database")
+    print("7. View all frameworks")
+    print("8. View all databases")
+    print("9. Choose my next stack")
+    print("10. Exit")
 
     choice = input("Enter your choice: ")
     return choice
@@ -112,12 +116,18 @@ def main():
     print_frameworks()
 
     menu_choice = menu()
-    if menu_choice == "6":
-        print("Okay. Goodbye!")
-        sys.exit()
 
-    elif menu_choice == "1":
-        print("Adding a framework")
+    if menu_choice == "1":
+        isFrontEnd = input("Is this a front end framework? (y/n): ")
+        if isFrontEnd == "y":
+            framework = input("Enter the framework name: ")
+            front_end_framework.append(framework)
+            print_frameworks()
+        else:
+            framework = input("Enter the framework name: ")
+            backend_end_framework.append(framework)
+            print_frameworks()
+
     elif menu_choice == "2":
         print("Removing a framework")
     elif menu_choice == "3":
@@ -136,6 +146,9 @@ def main():
             print("Sorry. Goodbye for now!")
             sys.exit()
             #
+    elif menu_choice == "6":
+        print("Okay. Goodbye!")
+        sys.exit()
     else:
         print("Sorry. That's not a valid choice.")
 
