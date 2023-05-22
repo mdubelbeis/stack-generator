@@ -81,8 +81,8 @@ def print_frameworks():
     print("\n")
 
 
+# All frameworks need to be in a stable 1.0 release
 front_end_framework = [
-    "React",
     "NextJS",
     "Vue",
     "Nuxt",
@@ -92,6 +92,7 @@ front_end_framework = [
     "Solid",
 ]
 
+# All frameworks need to be in a stable 1.0 release
 backend_end_framework = [
     "Express",
     "Django REST Framework",
@@ -99,27 +100,44 @@ backend_end_framework = [
     "Supabase",
 ]
 
+# All frameworks need to be in a stable 1.0 release
 databases = [
-    "MongoDB",
     "PostgreSQL",
 ]
 
-opening_message()
-print_frameworks()
-print("\n")
 
-menu_choice = menu()
-if menu_choice == "6":
-    print("Okay. Goodbye!")
-    sys.exit()
+def main():
+    opening_message()
+    print_frameworks()
 
-if menu_choice == "5":
-    # shuffle the lists
-    user_option = choose_stack(front_end_framework, backend_end_framework, databases)
-    if user_option == "y":
+    menu_choice = menu()
+    if menu_choice == "6":
         print("Okay. Goodbye!")
         sys.exit()
+
+    elif menu_choice == "1":
+        print("Adding a framework")
+    elif menu_choice == "2":
+        print("Removing a framework")
+    elif menu_choice == "3":
+        print("Updating a framework")
+    elif menu_choice == "4":
+        print("Viewing all frameworks")
+    elif menu_choice == "5":
+        # shuffle the lists
+        user_option = choose_stack(
+            front_end_framework, backend_end_framework, databases
+        )
+        if user_option == "y":
+            print("Okay. Goodbye!")
+            sys.exit()
+        else:
+            print("Sorry. Goodbye for now!")
+            sys.exit()
+            #
     else:
-        print("Sorry. Goodbye for now!")
-        sys.exit()
-        #
+        print("Sorry. That's not a valid choice.")
+
+
+if __name__ == "__main__":
+    main()
