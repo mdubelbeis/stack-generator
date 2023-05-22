@@ -103,6 +103,7 @@ backend_end_framework = [
 # All frameworks need to be in a stable 1.0 release
 databases = [
     "PostgreSQL",
+    "MongoDB",
 ]
 
 
