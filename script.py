@@ -122,10 +122,12 @@ def main():
         if isFrontEnd == "y":
             framework = input("Enter the framework name: ")
             front_end_framework.append(framework)
+            print(f"Added {framework} to the list of front-end frameworks")
             print_frameworks()
         else:
             framework = input("Enter the framework name: ")
             backend_end_framework.append(framework)
+            print(f"Added {framework} to the list of back-end frameworks")
             print_frameworks()
 
     elif menu_choice == "2":
