@@ -5,7 +5,9 @@ import sys
 
 def menu():
     print("1. Add a framework")
-    print("2. Add a database")
+    print("2. Add a meta framework")
+    print("3. Group a framework with a meta framework")
+    print("3. Add a database")
     print("3. Remove a framework")
     print("4. Remove a database")
     print("5. Update a framework")
@@ -87,13 +89,28 @@ def print_frameworks():
 
 # All frameworks need to be in a stable 1.0 release
 front_end_framework = [
-    "NextJS",
+    "React",
     "Vue",
+    "Svelte",
+    "Qwik",
+    "Solid",
+    "Astro",
+]
+
+meta_frameworks = [
+    "Next",
     "Nuxt",
     "SvelteKit",
-    "Qwik",
     "QwikCity",
-    "Solid",
+    "SolidStart",
+]
+
+combined_frameworks = [  # Randomize to get the combined_framework tuple, then randomize the tuple to get the framework or meta_framework
+    ("React", "Next"),
+    ("Vue", "Nuxt"),
+    ("Svelte", "SvelteKit"),
+    ("Qwik", "QwikCity"),
+    ("Solid", "SolidStart"),
 ]
 
 # All frameworks need to be in a stable 1.0 release
@@ -117,42 +134,43 @@ def main():
 
     menu_choice = menu()
 
-    if menu_choice == "1":
-        isFrontEnd = input("Is this a front end framework? (y/n): ")
-        if isFrontEnd == "y":
-            framework = input("Enter the framework name: ")
-            front_end_framework.append(framework)
-            print(f"Added {framework} to the list of front-end frameworks")
-            print_frameworks()
-        else:
-            framework = input("Enter the framework name: ")
-            backend_end_framework.append(framework)
-            print(f"Added {framework} to the list of back-end frameworks")
-            print_frameworks()
+    while True:
+        if menu_choice == "1":
+            isFrontEnd = input("Is this a front end framework? Press 1: ")
+            if isFrontEnd == "y":
+                framework = input("Enter the framework name: ")
+                front_end_framework.append(framework)
+                print(f"Added {framework} to the list of front-end frameworks")
+                print_frameworks()
+            else:
+                framework = input("Enter the framework name: ")
+                backend_end_framework.append(framework)
+                print(f"Added {framework} to the list of back-end frameworks")
+                print_frameworks()
 
-    elif menu_choice == "2":
-        print("Removing a framework")
-    elif menu_choice == "3":
-        print("Updating a framework")
-    elif menu_choice == "4":
-        print("Viewing all frameworks")
-    elif menu_choice == "5":
-        # shuffle the lists
-        user_option = choose_stack(
-            front_end_framework, backend_end_framework, databases
-        )
-        if user_option == "y":
+        elif menu_choice == "2":
+            print("Removing a framework")
+        elif menu_choice == "3":
+            print("Updating a framework")
+        elif menu_choice == "4":
+            print("Viewing all frameworks")
+        elif menu_choice == "5":
+            # shuffle the lists
+            user_option = choose_stack(
+                front_end_framework, backend_end_framework, databases
+            )
+            if user_option == "y":
+                print("Okay. Goodbye!")
+                sys.exit()
+            else:
+                print("Sorry. Goodbye for now!")
+                sys.exit()
+                #
+        elif menu_choice == "6":
             print("Okay. Goodbye!")
             sys.exit()
         else:
-            print("Sorry. Goodbye for now!")
-            sys.exit()
-            #
-    elif menu_choice == "6":
-        print("Okay. Goodbye!")
-        sys.exit()
-    else:
-        print("Sorry. That's not a valid choice.")
+            print("Sorry. That's not a valid choice.")
 
 
 if __name__ == "__main__":
