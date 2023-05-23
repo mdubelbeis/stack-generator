@@ -1,11 +1,17 @@
 import random
 import os
 import sys
+import subprocess
 from colorama import Fore, Back, Style
 
 
-PROJECT_NAME = "my-project"
+class Project:
+    def __init__(self, name):
+        self.name = name
+        print(f"Project name: {self.name}")
 
+
+project = Project("my-project")
 # All frameworks need to be in a stable 1.0 release
 front_end_frameworks = [
     "react",
@@ -25,19 +31,20 @@ meta_frameworks = [
 ]
 
 # Randomize to get the combined_framework tuple, then randomize the tuple to get the framework or meta_framework
-CLI_commands = [
-    {"react": "npm create vite@latest"},
-    {"vue", "npm create vite@latest"},
-    {"svelte": "npm create vite@latest"},
-    {"next": "npx create-next-app@latest"},
-    {"qwik", "npm create qwik@latest"},
-    {"qwik_city", "npm create qwik@latest"},
-    {"solid_start", "npm init solid@latest"},
-    {"nuxt": "npx create-nuxt-app " + PROJECT_NAME},
-    {"svelte_kit", "npm create svelte@latest " + PROJECT_NAME},
-    {"solid", "npx degit solidjs/templates/js " + PROJECT_NAME},
-    {"astro", "npm create astro@latest"},
-]
+CLI_commands = {
+    "react": "npm create vite@latest",
+    "vue": "npm create vite@latest",
+    "svelte": "npm create vite@latest",
+    "next": "npx create-next-app@latest",
+    "qwik": "npm create qwik@latest",
+    "qwik_city": "npm create qwik@latest",
+    "solid_start": "npm init solid@latest",
+    "nuxt": "npx create-nuxt-app " + project.name,
+    "svelte_kit": "npm create svelte@latest " + project.name,
+    "solid": "npx degit solidjs/templates/js " + project.name,
+    "astro": "npm create astro@latest",
+}
+
 
 # All frameworks need to be in a stable 1.0 release
 backend_end_frameworks = [
@@ -93,11 +100,10 @@ def stack_generator_menu():
     choice = input("Enter your choice: ")
 
     if choice == "1":
-        stack = choose_stack()
-        print(stack)
-
-    print("Goodbye!")
-    sys.exit()
+        return choice
+    else:
+        print("Goodbye!")
+        sys.exit()
 
 
 def main_menu():
@@ -109,17 +115,11 @@ def main_menu():
 
     menu_choice = input("Enter your choice: ")
 
-    while True:
-        if menu_choice == "1":
-            operations_menu()
-        elif menu_choice == "2":
-            stack_generator_menu()
-        elif menu_choice == "q":
-            print("Goodbye! Keep building!")
-            sys.exit()
-        else:
-            print("Invalid choice. Please try again.")
-            main_menu()
+    if menu_choice == "1":
+        return menu_choice
+    else:
+        print("Goodbye!")
+        sys.exit()
 
 
 def choose_stack():
@@ -129,17 +129,14 @@ def choose_stack():
     random.shuffle(backend_end_frameworks)
     random.shuffle(databases)
 
-    # pick a random item from each list
-
     # Filter FE framework and meta framework
     front_end_framework_options = [random.choice(front_end_frameworks)]
     front_end_framework_options.append(random.choice(meta_frameworks))
 
     front_end_framework_selected = random.choice(
         meta_frameworks
-    )  # My use case right now
+    )  # My use case right now (meta frameworks)
     backend_end_framework_selected = random.choice(backend_end_frameworks)
-    print(backend_end_framework_selected)
     database_selected = random.choice(databases)
 
     print("\n")  # spacing
@@ -150,19 +147,11 @@ def choose_stack():
         or backend_end_framework_selected == "supabase"
     ):
         database_selected = None
-        print(
-            f"Your front end framework is: {front_end_framework_selected.title().replace('_', ' ')}"
-        )
-        print(f"Your backend framework is: {backend_end_framework_selected.title()}")
-    else:
-        print(f"Your front end framework is: {front_end_framework_selected.title()}")
-        print(f"Your backend framework is: {backend_end_framework_selected.title()}")
-        print(f"Your database is: {database_selected.title()}")
 
     return {
-        "front_end_framework": front_end_framework_selected.title().replace("_", " "),
-        "backend_end_framework": backend_end_framework_selected.title(),
-        "databases": database_selected.title(),
+        "front_end_framework": front_end_framework_selected,
+        "backend_end_framework": backend_end_framework_selected,
+        "databases": database_selected if database_selected else database_selected,
     }
 
 
@@ -177,6 +166,26 @@ def opening_message():
     print(
         "This script will help you choose a framework for your next project by randomly selecting one for you then upon approval, will generate a stack for you."
     )
+
+
+def print_stack(stack):
+    if stack["databases"] == None:
+        print(
+            f"""Your frontend framework is: {Fore.BLUE}{stack['front_end_framework'].title().replace('_', ' ')}{Style.RESET_ALL}"""
+        )
+        print(
+            f"""Your backend framework is: {Fore.BLUE}{stack['backend_end_framework'].title()}{Style.RESET_ALL}"""
+        )
+    else:
+        print(
+            f"""Your frontend framework is: {Fore.BLUE}{stack['front_end_framework'].title().replace('_', ' ')}{Style.RESET_ALL}"""
+        )
+        print(
+            f"""Your backend framework is: {Fore.BLUE}{stack['backend_end_framework'].title()}{Style.RESET_ALL}"""
+        )
+        print(
+            f"""Your database is: {Fore.BLUE}{stack['databases'].title()}{Style.RESET_ALL}"""
+        )
 
 
 def clear_terminal():
@@ -228,7 +237,56 @@ def print_frameworks():
 def main():
     opening_message()
     print_frameworks()
-    main_menu()
+    menu_choice = main_menu()
+
+    if menu_choice == "1":
+        random_generator = stack_generator_menu()
+        if random_generator == "1":
+            stack = choose_stack()
+            print_stack(stack)
+
+            # if user is satisfied, then install the chosen frontend framework via terminal command
+            satisfied = input(
+                f"{Fore.GREEN}Are you satisfied with this stack? (y/n): {Style.RESET_ALL}"
+            )
+            if satisfied == "y":
+                return_val = None
+                if (
+                    stack["front_end_framework"] == "svelte_kit"
+                    or stack["front_end_framework"] == "nuxt"
+                    or stack["front_end_framework"] == "solid"
+                ):
+                    new_project_name = input(
+                        f"{Fore.GREEN}What would you like to name your project?: {Style.RESET_ALL}"
+                    )
+
+                    project.name = new_project_name
+
+                    # OUTPUT TO USER ALL FANCY COLORED ABOUT THE PROCESS
+                    print(f"New project name: {project.name}")
+
+                    return_val = subprocess.call(
+                        f"cd ~/Desktop && mkdir {project.name} && cd {project.name} && {CLI_commands[stack['front_end_framework']]}",
+                        shell=True,
+                    )
+                else:
+                    return_val = subprocess.call(
+                        f"cd ~/Desktop && {CLI_commands[stack['front_end_framework']]}",
+                        shell=True,
+                    )
+
+                print(f"Return value: {return_val}")
+                print(f"{Fore.GREEN}Done!{Style.RESET_ALL}")
+            else:
+                print("Goodbye!")
+                sys.exit()
+
+    elif menu_choice == "q":
+        print("Goodbye!")
+        sys.exit()
+    else:
+        print("Invalid choice. Please try again.")
+        main_menu()
 
 
 if __name__ == "__main__":
