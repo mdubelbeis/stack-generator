@@ -39,9 +39,9 @@ CLI_commands = {
     "qwik": "npm create qwik@latest",
     "qwik_city": "npm create qwik@latest",
     "solid_start": "npm init solid@latest",
-    "nuxt": "npx create-nuxt-app " + project.name,
-    "svelte_kit": "npm create svelte@latest " + project.name,
-    "solid": "npx degit solidjs/templates/js " + project.name,
+    "nuxt": "npx create-nuxt-app ",
+    "svelte_kit": "npm create svelte@latest ",
+    "solid": "npx degit solidjs/templates/js ",
     "astro": "npm create astro@latest",
 }
 
@@ -247,7 +247,7 @@ def main():
 
             # if user is satisfied, then install the chosen frontend framework via terminal command
             satisfied = input(
-                f"{Fore.GREEN}Are you satisfied with this stack? (y/n): {Style.RESET_ALL}"
+                f"{Fore.GREEN}[y/n]{Style.RESET_ALL} - Are you satisfied with this stack?: "
             )
             if satisfied == "y":
                 return_val = None
@@ -257,16 +257,14 @@ def main():
                     or stack["front_end_framework"] == "solid"
                 ):
                     new_project_name = input(
-                        f"{Fore.GREEN}What would you like to name your project?: {Style.RESET_ALL}"
+                        f"{Fore.GREEN}Name your project?: {Style.RESET_ALL}"
                     )
-
-                    project.name = new_project_name
 
                     # OUTPUT TO USER ALL FANCY COLORED ABOUT THE PROCESS
                     print(f"New project name: {project.name}")
 
                     return_val = subprocess.call(
-                        f"cd ~/Desktop && mkdir {project.name} && cd {project.name} && {CLI_commands[stack['front_end_framework']]}",
+                        f"cd ~/Desktop && mkdir {new_project_name} && cd {new_project_name} && {CLI_commands[stack['front_end_framework']]} {new_project_name}",
                         shell=True,
                     )
                 else:
@@ -278,8 +276,44 @@ def main():
                 print(f"Return value: {return_val}")
                 print(f"{Fore.GREEN}Done!{Style.RESET_ALL}")
             else:
-                print("Goodbye!")
-                sys.exit()
+                # fetch a new stack for the user
+                print(f"\n{Fore.BLUE}Fetching a new stack...{Style.RESET_ALL}")
+                stack = choose_stack()
+                print_stack(stack)
+
+                satisfied = input(
+                    f"{Fore.GREEN}[y/n]{Style.RESET_ALL} - Ready to install?: "
+                )
+
+                if satisfied == "y":
+                    return_val = None
+                    if (
+                        stack["front_end_framework"] == "svelte_kit"
+                        or stack["front_end_framework"] == "nuxt"
+                        or stack["front_end_framework"] == "solid"
+                    ):
+                        new_project_name = input(
+                            f"{Fore.GREEN}Name your project?: {Style.RESET_ALL}"
+                        )
+
+                        # OUTPUT TO USER ALL FANCY COLORED ABOUT THE PROCESS
+                        print(f"New project name: {project.name}")
+
+                        return_val = subprocess.call(
+                            f"cd ~/Desktop && cd {new_project_name} && {CLI_commands[stack['front_end_framework']]} {new_project_name} .",
+                            shell=True,
+                        )
+                    else:
+                        return_val = subprocess.call(
+                            f"cd ~/Desktop && {CLI_commands[stack['front_end_framework']]}",
+                            shell=True,
+                        )
+                else:
+                    print("Goodbye!")
+                    sys.exit()
+
+                    # user has no option but to accept the stack
+                    print(f"{Fore.GREEN}Done!{Style.RESET_ALL}")
 
     elif menu_choice == "q":
         print("Goodbye!")
