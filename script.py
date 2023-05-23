@@ -300,7 +300,7 @@ def main():
                         print(f"New project name: {project.name}")
 
                         return_val = subprocess.call(
-                            f"cd ~/Desktop && cd {new_project_name} && {CLI_commands[stack['front_end_framework']]} {new_project_name}",
+                            f"cd ~/Desktop && cd {new_project_name} && {CLI_commands[stack['front_end_framework']]} {new_project_name} .",
                             shell=True,
                         )
                     else:
