@@ -12,7 +12,7 @@ class Project:
 
 
 project = Project("my-project")
-# All frameworks need to be in a stable 1.0 release
+
 front_end_frameworks = [
     "react",
     "vue",
@@ -20,6 +20,9 @@ front_end_frameworks = [
     "qwik",
     "solid",
     "astro",
+    "solid",
+    "solid",
+    "solid",
 ]
 
 meta_frameworks = [
@@ -28,6 +31,8 @@ meta_frameworks = [
     "svelte_kit",
     "qwik_city",
     "solid_start",
+    "solid",
+    "solid",
 ]
 
 # Randomize to get the combined_framework tuple, then randomize the tuple to get the framework or meta_framework
@@ -41,7 +46,7 @@ CLI_commands = {
     "solid_start": "npm init solid@latest",
     "nuxt": "npx create-nuxt-app ",
     "svelte_kit": "npm create svelte@latest ",
-    "solid": "npx degit solidjs/templates/js ",
+    "solid": "npx degit solidjs/templates/ts ",
     "astro": "npm create astro@latest",
 }
 
@@ -51,6 +56,9 @@ backend_end_frameworks = [
     "express",
     "djangorestframework",
     "firebase",
+    "supabase",
+    "supabase",
+    "supabase",
     "supabase",
 ]
 
@@ -254,7 +262,6 @@ def main():
                 if (
                     stack["front_end_framework"] == "svelte_kit"
                     or stack["front_end_framework"] == "nuxt"
-                    or stack["front_end_framework"] == "solid"
                 ):
                     new_project_name = input(
                         f"{Fore.GREEN}Name your project?: {Style.RESET_ALL}"
@@ -267,13 +274,21 @@ def main():
                         f"cd ~/Desktop && mkdir {new_project_name} && cd {new_project_name} && {CLI_commands[stack['front_end_framework']]} {new_project_name}",
                         shell=True,
                     )
-                elif stack["front_end_framework"] == "solid_start":
+                elif (
+                    stack["front_end_framework"].lower() == "solid"
+                    and stack["backend_end_framework"] == "supabase"
+                ):
                     new_project_name = input(
                         f"{Fore.GREEN}Name your project?: {Style.RESET_ALL}"
                     )
-                    print(f"New project name: {project.name}")
-                    return_val = subprocess.call(
-                        f"cd ~/Desktop && mkdir {new_project_name} && cd {new_project_name} && {CLI_commands[stack['front_end_framework']]}",
+
+                    subprocess.call(
+                        f"cd ~/Desktop && {CLI_commands[stack['front_end_framework']]} {new_project_name} && cd {new_project_name} && npm install @supabase/supabase-js && touch .env && echo 'testing' > .env",
+                        shell=True,
+                    )
+
+                    subprocess.call(
+                        f"cd ~/Desktop/{new_project_name} && echo 'VITE_SUPABASE_URL=YOUR_SUPABASE_URL\nVITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY' > .env",
                         shell=True,
                     )
                 else:
