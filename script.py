@@ -14,25 +14,21 @@ class Project:
 project = Project("my-project")
 
 front_end_frameworks = [
-    # "react",
-    # "vue",
-    # "svelte",
-    # "qwik",
-    # "solid",
-    # "astro",
+    "react",
+    "vue",
+    "svelte",
+    "qwik",
     "solid",
-    "solid",
+    "astro",
     "solid",
 ]
 
 meta_frameworks = [
-    # "next",
-    # "nuxt",
-    # "svelte_kit",
-    # "qwik_city",
-    # "solid_start",
-    "solid",
-    "solid",
+    "next",
+    "nuxt",
+    "svelte_kit",
+    "qwik_city",
+    "solid_start",
 ]
 
 # Randomize to get the combined_framework tuple, then randomize the tuple to get the framework or meta_framework
@@ -53,12 +49,9 @@ CLI_commands = {
 
 # All frameworks need to be in a stable 1.0 release
 backend_end_frameworks = [
-    # "express",
-    # "djangorestframework",
-    # "firebase",
-    "supabase",
-    "supabase",
-    "supabase",
+    "express",
+    "djangorestframework",
+    "firebase",
     "supabase",
 ]
 
