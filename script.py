@@ -267,6 +267,15 @@ def main():
                         f"cd ~/Desktop && mkdir {new_project_name} && cd {new_project_name} && {CLI_commands[stack['front_end_framework']]} {new_project_name}",
                         shell=True,
                     )
+                elif stack["front_end_framework"] == "solid_start":
+                    new_project_name = input(
+                        f"{Fore.GREEN}Name your project?: {Style.RESET_ALL}"
+                    )
+                    print(f"New project name: {project.name}")
+                    return_val = subprocess.call(
+                        f"cd ~/Desktop && mkdir {new_project_name} && cd {new_project_name} && {CLI_commands[stack['front_end_framework']]}",
+                        shell=True,
+                    )
                 else:
                     return_val = subprocess.call(
                         f"cd ~/Desktop && {CLI_commands[stack['front_end_framework']]}",
