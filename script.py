@@ -21,8 +21,6 @@ front_end_frameworks = [
     "solid",
     "astro",
     "solid",
-    "solid",
-    "solid",
 ]
 
 meta_frameworks = [
@@ -31,8 +29,6 @@ meta_frameworks = [
     "svelte_kit",
     "qwik_city",
     "solid_start",
-    "solid",
-    "solid",
 ]
 
 # Randomize to get the combined_framework tuple, then randomize the tuple to get the framework or meta_framework
@@ -56,9 +52,6 @@ backend_end_frameworks = [
     "express",
     "djangorestframework",
     "firebase",
-    "supabase",
-    "supabase",
-    "supabase",
     "supabase",
 ]
 
@@ -282,13 +275,40 @@ def main():
                         f"{Fore.GREEN}Name your project?: {Style.RESET_ALL}"
                     )
 
+                    supabase_component_template = """
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+                    """
+
+                    # Install frontend framework via terminal command
                     subprocess.call(
                         f"cd ~/Desktop && {CLI_commands[stack['front_end_framework']]} {new_project_name} && cd {new_project_name} && npm install @supabase/supabase-js && touch .env && echo 'testing' > .env",
                         shell=True,
                     )
 
+                    # create a .env file
                     subprocess.call(
                         f"cd ~/Desktop/{new_project_name} && echo 'VITE_SUPABASE_URL=YOUR_SUPABASE_URL\nVITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY' > .env",
+                        shell=True,
+                    )
+
+                    # create a src folder and a supabaseClient.tsx file
+                    subprocess.call(
+                        f"touch ~/Desktop/{new_project_name}/src/supabaseClient.tsx",
+                        shell=True,
+                    )
+
+                    # write boilerplate to the supabaseClient.tsx file
+                    # subprocess.call(
+                    #     f"google https://supabase.com/docs/guides/getting-started/tutorials/with-solidjs#initialize-a-solidjs-app",
+                    #     shell=True,
+                    # )
+                    subprocess.call(
+                        f"cd ~/Desktop/{new_project_name}/src && echo '{supabase_component_template.strip()}' > supabaseClient.tsx",
                         shell=True,
                     )
                 else:
