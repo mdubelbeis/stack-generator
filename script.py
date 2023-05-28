@@ -36,7 +36,7 @@ CLI_commands = {
     "qwik": "npm create qwik@latest",
     "qwik_city": "npm create qwik@latest",
     "solid_start": "npm init solid@latest",
-    "nuxt": "npx nuxi@latest init",
+    "nuxt": "npx nuxi@latest init ",
     "svelte_kit": "npm create svelte@latest ",
     "solid": "npx degit solidjs/templates/ts ",
     "astro": "npm create astro@latest",
@@ -292,6 +292,17 @@ def main():
                     print(f"{Fore.GREEN}Done!{Style.RESET_ALL}")
 
     elif menu_choice == "2":
+        clear_terminal()
+        print(
+            f"{Fore.GREEN}Here are your current available frontend frameworks: {Style.RESET_ALL}"
+        )
+        print(
+            f"{Fore.BLUE}-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~{Style.RESET_ALL}"
+        )
+        for key in CLI_commands.keys():
+            print(f"{key}")
+        print("\n")  # spacing
+        print("\n")  # spacing
         user_framework_choice = input("Enter a framework: ")
         if user_framework_choice.lower() in CLI_commands:
             print(f"{user_framework_choice.title()}....Found!")
@@ -303,12 +314,10 @@ def main():
                 f"{Fore.GREEN}H{Style.RESET_ALL}{Fore.BLUE}a{Style.RESET_ALL}{Fore.GREEN}p{Style.RESET_ALL}{Fore.BLUE}p{Style.RESET_ALL}{Fore.GREEN}y{Style.RESET_ALL} {Fore.BLUE}C{Style.RESET_ALL}{Fore.GREEN}o{Style.RESET_ALL}{Fore.BLUE}d{Style.RESET_ALL}{Fore.GREEN}i{Style.RESET_ALL}{Fore.BLUE}n{Style.RESET_ALL}{Fore.GREEN}g{Style.RESET_ALL}{Fore.BLUE}!{Style.RESET_ALL}{Style.RESET_ALL}"
             )
         else:
-            print("No")
             print(
-                f"{Fore.RED}Invalid framework choice. Please try again.{Style.RESET_ALL}"
+                f"{Fore.RED}Invalid framework choice. Add today's newest framework or please try spelling again.{Style.RESET_ALL}"
             )
-            # main_menu()
-            sys.exit()
+            main_menu()
 
     elif menu_choice == "q":
         print("Goodbye!")
