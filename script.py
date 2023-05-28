@@ -319,6 +319,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
                 print(f"Return value: {return_val}")
                 print(f"{Fore.GREEN}Done!{Style.RESET_ALL}")
+
             else:
                 # fetch a new stack for the user
                 print(f"\n{Fore.BLUE}Fetching a new stack...{Style.RESET_ALL}")
@@ -358,6 +359,9 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
                     # user has no option but to accept the stack
                     print(f"{Fore.GREEN}Done!{Style.RESET_ALL}")
+
+        elif random_generator == "2":
+            pass
 
     elif menu_choice == "q":
         print("Goodbye!")
