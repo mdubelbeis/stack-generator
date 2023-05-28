@@ -2,16 +2,12 @@ import random
 import os
 import sys
 import subprocess
+import time
 from colorama import Fore, Back, Style
+from scaffold_framework import scaffold
+from classes import Project
 
-
-class Project:
-    def __init__(self, name):
-        self.name = name
-        print(f"Project name: {self.name}")
-
-
-project = Project("my-project")
+project = Project("My Project")
 
 front_end_frameworks = [
     "react",
@@ -33,14 +29,14 @@ meta_frameworks = [
 
 # Randomize to get the combined_framework tuple, then randomize the tuple to get the framework or meta_framework
 CLI_commands = {
-    "react": "npm create vite@latest",
-    "vue": "npm create vite@latest",
-    "svelte": "npm create vite@latest",
+    "react": f"npm create vite@latest -- --template react-ts",
+    "vue": f"npm create vite@latest -- --template vue-ts",
+    "svelte": f"npm create vite@latest -- --template svelte-ts",
     "next": "npx create-next-app@latest",
     "qwik": "npm create qwik@latest",
     "qwik_city": "npm create qwik@latest",
     "solid_start": "npm init solid@latest",
-    "nuxt": "npx create-nuxt-app ",
+    "nuxt": "npx nuxi@latest init",
     "svelte_kit": "npm create svelte@latest ",
     "solid": "npx degit solidjs/templates/ts ",
     "astro": "npm create astro@latest",
@@ -111,12 +107,13 @@ def main_menu():
     print(f"\n{Fore.GREEN}Which menu would you like to see?: ")
     print(f"{Fore.BLUE}~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~{Style.RESET_ALL}")
     print(f"{Fore.GREEN}[1]{Style.RESET_ALL} - Stack Generator Menu")
+    print(f"{Fore.GREEN}[2]{Style.RESET_ALL} - Scaffold a Framework")
     # print(f"{Fore.GREEN}[2]{Style.RESET_ALL} - Operations Menu")
     print(f"{Fore.GREEN}[q]{Style.RESET_ALL} - Quit")
 
     menu_choice = input("Enter your choice: ")
 
-    if menu_choice == "1":
+    if menu_choice == "1" or menu_choice == "2":
         return menu_choice
     else:
         print("Goodbye!")
@@ -157,6 +154,7 @@ def choose_stack():
 
 
 def opening_message():
+    clear_terminal()
     print(f"{Fore.BLUE}#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~{Style.RESET_ALL}")
     print(
         f"{Fore.BLUE}#{Style.RESET_ALL} {Fore.GREEN} Welcome to the Stack Generator! {Fore.BLUE}#{Style.RESET_ALL}"
@@ -251,74 +249,7 @@ def main():
                 f"{Fore.GREEN}[y/n]{Style.RESET_ALL} - Are you satisfied with this stack?: "
             )
             if satisfied == "y":
-                return_val = None
-                if (
-                    stack["front_end_framework"] == "svelte_kit"
-                    or stack["front_end_framework"] == "nuxt"
-                ):
-                    new_project_name = input(
-                        f"{Fore.GREEN}Name your project?: {Style.RESET_ALL}"
-                    )
-
-                    # OUTPUT TO USER ALL FANCY COLORED ABOUT THE PROCESS
-                    print(f"New project name: {project.name}")
-
-                    return_val = subprocess.call(
-                        f"cd ~/Desktop && mkdir {new_project_name} && cd {new_project_name} && {CLI_commands[stack['front_end_framework']]} {new_project_name}",
-                        shell=True,
-                    )
-                elif (
-                    stack["front_end_framework"].lower() == "solid"
-                    and stack["backend_end_framework"] == "supabase"
-                ):
-                    new_project_name = input(
-                        f"{Fore.GREEN}Name your project?: {Style.RESET_ALL}"
-                    )
-
-                    supabase_component_template = """
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-                    """
-
-                    # Install frontend framework via terminal command
-                    subprocess.call(
-                        f"cd ~/Desktop && {CLI_commands[stack['front_end_framework']]} {new_project_name} && cd {new_project_name} && npm install @supabase/supabase-js && touch .env && echo 'testing' > .env",
-                        shell=True,
-                    )
-
-                    # create a .env file
-                    subprocess.call(
-                        f"cd ~/Desktop/{new_project_name} && echo 'VITE_SUPABASE_URL=YOUR_SUPABASE_URL\nVITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY' > .env",
-                        shell=True,
-                    )
-
-                    # create a src folder and a supabaseClient.tsx file
-                    subprocess.call(
-                        f"touch ~/Desktop/{new_project_name}/src/supabaseClient.tsx",
-                        shell=True,
-                    )
-
-                    # write boilerplate to the supabaseClient.tsx file
-                    # subprocess.call(
-                    #     f"google https://supabase.com/docs/guides/getting-started/tutorials/with-solidjs#initialize-a-solidjs-app",
-                    #     shell=True,
-                    # )
-                    subprocess.call(
-                        f"cd ~/Desktop/{new_project_name}/src && echo '{supabase_component_template.strip()}' > supabaseClient.tsx",
-                        shell=True,
-                    )
-                else:
-                    return_val = subprocess.call(
-                        f"cd ~/Desktop && {CLI_commands[stack['front_end_framework']]}",
-                        shell=True,
-                    )
-
-                print(f"Return value: {return_val}")
-                print(f"{Fore.GREEN}Done!{Style.RESET_ALL}")
+                scaffold(stack, CLI_commands, project)
 
             else:
                 # fetch a new stack for the user
@@ -360,8 +291,24 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
                     # user has no option but to accept the stack
                     print(f"{Fore.GREEN}Done!{Style.RESET_ALL}")
 
-        elif random_generator == "2":
-            pass
+    elif menu_choice == "2":
+        user_framework_choice = input("Enter a framework: ")
+        if user_framework_choice.lower() in CLI_commands:
+            print(f"{user_framework_choice.title()}....Found!")
+
+            # install the framework
+            scaffold(user_framework_choice, CLI_commands, project)
+
+            print(
+                f"{Fore.GREEN}H{Style.RESET_ALL}{Fore.BLUE}a{Style.RESET_ALL}{Fore.GREEN}p{Style.RESET_ALL}{Fore.BLUE}p{Style.RESET_ALL}{Fore.GREEN}y{Style.RESET_ALL} {Fore.BLUE}C{Style.RESET_ALL}{Fore.GREEN}o{Style.RESET_ALL}{Fore.BLUE}d{Style.RESET_ALL}{Fore.GREEN}i{Style.RESET_ALL}{Fore.BLUE}n{Style.RESET_ALL}{Fore.GREEN}g{Style.RESET_ALL}{Fore.BLUE}!{Style.RESET_ALL}{Style.RESET_ALL}"
+            )
+        else:
+            print("No")
+            print(
+                f"{Fore.RED}Invalid framework choice. Please try again.{Style.RESET_ALL}"
+            )
+            # main_menu()
+            sys.exit()
 
     elif menu_choice == "q":
         print("Goodbye!")
